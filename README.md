@@ -14,7 +14,8 @@ A Simple bbs 'Harmonies', a web app based on [Dancer2](http://perldancer.org/), 
 Copy the database file (in '/db' dir) to the parent dir, avoiding the server autorestart when the database file is updated.
 ####Step 2.
 ```perl
-$  plackup -R . bin/app.psgi```
+$  plackup -R . bin/app.psgi
+```
 
 Using the built-in http server, visit the address: [http://localhost:5000](http://localhost:5000), have fun.
 
