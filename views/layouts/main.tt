@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="<% settings.charset %>">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<title>Kanx2tanx3a::Keijibann</title>
+	<link rel="stylesheet" href="<% request.uri_base %>/css/bootstrap.css">
+	<link rel="stylesheet" href="<% request.uri_base %>/css/usebootstrap.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<style type="text/css">
+		html {
+			position: relative;
+			min-height: 100%;
+		}
+		body {
+			/* Margin bottom by footer height */
+			margin-bottom: 60px;
+		}
+		.footer {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			/* Set the fixed height of the footer here */
+			height: 60px;
+		}
+		.form-container {
+			position: position;
+			vertical-align: middle;
+		}
+		hr {
+			border-color: #ffffff;
+			height: 2px;
+		}
+		.hr_top_margin1 {
+			margin-top: 0px;
+		}
+		.hr_top_margin2 {
+			margin-top: 15px;
+		}
+		.jumbotron {
+			margin-top: 20px;
+			margin-bottom: 20px;
+			padding-top: 15px;
+			padding-bottom: 15px;
+			border-radius: 20;
+		}
+		.default_color {
+			background-color: #4e5d6c;
+		}
+		.primary_color {
+			background-color: #df691a;
+		}
+		.success_color {
+			background-color: #5cb85c;
+		}
+		.info_color {
+			background-color: #5bc0de;
+		}
+		.warning_color {
+			background-color: #f0ad4e;
+		}
+		.danger_color {
+			background-color: #d9534f;
+		}
+		.a_white {
+			color: #ffffff;
+			padding-top: 0px;
+		}
+		.head_inline {
+			display: inline;
+		}
+		.edit_textarea {
+			padding: 0px;
+		}
+		.modal_foot_top {
+			margin-top: 3px;
+		}
+		#noise_id {
+			display: none;
+		}
+		
+	</style>
+
+</head>
+<body>
+	<div class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class="dropdown">
+						<a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Harmonies <span class="caret"></span></a>
+						<ul class="dropdown-menu" aria-labelledby="themes">
+							<li><a href="<% request.uri_base %>/mkanoise">Make a noise</a></li>
+							<li class="divider"></li>
+							<li><a href="#">Noisist</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div>
+				<ul class="nav navbar-nav navbar-right">
+					<% IF !session.logged_in %>
+					<li><a href="<% request.uri_base %>/signin">Sign in</a></li>
+					<li><a href="<% request.uri_base %>/signup">Sign up</a></li>
+					<% ELSE %>
+					<li><a href="<% request.uri_base %>/list"><i class="fa fa-user fa-fw"></i><% session.cur_user %></a></li>
+					<li><a href="<% request.uri_base %>/logout">Log out</a></li>
+					<% END %>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<% IF msg %>
+	<div class="col-lg-3 col-lg-offset-4">
+		<div class="bs-component">
+			<div class="alert alert-dismissable alert-default">
+				<button type="button" class="close" data-dismiss="alert">×</button>
+				<strong><% msg %></strong>
+			</div>
+		</div>
+	</div>
+	<% END %>
+
+	<% content %>
+
+	<div class="footer col-lg-12">
+		<div class="container text-center">&copy;&nbsp&nbsp <a href="mailto:wang-zhenjun@kayac.com">Zhenjun Wang</a>&nbsp&nbsp x&nbsp&nbsp Powered by&nbsp&nbsp <a href="http://perldancer.org/">Dancer2</a>&nbsp&nbsp <% dancer_version %>.</div>
+	</div>
+
+
+	<!-- Grab jQuery from a CDN, fall back to local if necessary -->
+	<script src="<% request.uri_base %>/javascripts/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript">/* <![CDATA[ */
+		!window.jQuery && document.write('<script type="text/javascript" src="<% request.uri_base %>/javascripts/jquery.js"><\/script>')
+		/* ]]> */</script>
+		<script src="<% request.uri_base %>/javascripts/bootstrap.min.js"></script>
+		<script src="<% request.uri_base %>/javascripts/usebootstrap.js"></script>
+		<script src="<% request.uri_base %>/javascripts/autosize.min.js"></script>
+		<script type="text/javascript">
+
+			$(document).ready(function () {
+
+				window.setTimeout(function() {
+					$(".alert-dismissable").fadeTo(1500, 0).slideUp(500, function(){
+						$(this).remove();
+					});
+				}, 300);
+
+				autosize($('textarea'));
+
+			});
+
+		</script>
+
+	</body>
+	</html>

@@ -1,0 +1,38 @@
+<div class="form-container">
+  <div class="row">
+    <div class="col-lg-offset-4 col-lg-4">
+      <div class="well bs-component">
+        <form action="<% signup_url %>" method=post class="form-horizontal">
+          <fieldset>
+            <legend align="center"><h3>Sign &nbsp up</h3></legend>
+            <div class="form-group">
+              <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+              <div class="col-lg-10">
+                <input type="text reset" class="form-control" name="inputEmail" placeholder="Email Address">
+              </div>
+            </div>
+            <div class="form-group">
+            <label for="inputUserName" class="col-lg-2 control-label">Name</label>
+              <div class="col-lg-10">
+                <input type="text" class="form-control" name="inputUserName" placeholder="User Name">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+              <div class="col-lg-10">
+                <input type="password" class="form-control" name="inputPassword" placeholder="Password">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-lg-9 col-lg-offset-3">
+                <button class="btn btn-default" type="reset">Cancel</button>
+                <button type="submit" class="btn btn-primary col-lg-offset-2">Sign up</button>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+        <% IF err %><div class="alert alert-dismissable alert-warning"><strong>Error:</strong> <% err %></div><% END %>
+      </div>
+    </div>
+  </div>
+</div>

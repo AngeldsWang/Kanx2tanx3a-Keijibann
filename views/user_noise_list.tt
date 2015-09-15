@@ -1,0 +1,126 @@
+<% IF session.logged_in %>
+<div class="form-container">
+  <div class="row">
+    <div class="col-lg-offset-2 col-lg-8">
+      <form action="<% mkanoise_url %>" method=post class="form-horizontal">
+        <fieldset>
+          <div class="form-group">
+            <div class="col-lg-12">
+              <input type="text reset" class="form-control" name="inputTitle" placeholder="Title">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-lg-12">
+              <textarea class="form-control" rows="4" id="textArea" name="inputText" placeholder="Text"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-lg-3 col-lg-offset-9">
+              <button class="btn btn-default" type="reset">Shut up</button>
+              <button type="submit" class="btn btn-primary col-lg-offset-2">Say !</button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
+<% END %>
+
+<% IF user_noise.size %>
+  <% FOREACH id IN user_noise.keys.nsort.reverse %>
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-<% get_offset_fun() %>">
+      <div class="jumbotron <% get_color_fun() %>">
+        <div class="row">
+          <div class="col-lg-8">
+              <a class="btn a_white dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user fa-fw"></i>
+                <% decode_fun('utf-8', user_noise.$id.username) %> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#edit_btn<% id %>" data-toggle="modal"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
+                <li><a href="#delete_btn<% id %>" data-toggle="modal"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
+              </ul>
+             <h4 class="head_inline"><% decode_fun('utf-8', user_noise.$id.title) %><h4>
+          </div>
+          <div class="col-lg-4 text-right"><% decode_fun('utf-8', user_noise.$id.timestamp) %></div>
+          </div>
+          <hr class="hr_top_margin1">
+          <p><% decode_fun('utf-8', user_noise.$id.text) %></p>
+        </div>
+        <!-- delete Modal -->
+        <div class="modal fade" id="delete_btn<% id %>" role="dialog">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-exclamation-triangle"></i>&nbsp; Delete</h4>
+              </div>
+              <div class="modal-body">
+                <h2>Ary you sure to delete this noise?</h2>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>&nbsp;&nbsp;&nbsp;
+                <a href="<% delete_url %>/<% id %>"><button type="button" class="btn btn-primary">Delete</button></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- edit Modal -->
+        <div class="modal fade" id="edit_btn<% id %>" role="dialog">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">&nbsp; <i class="fa fa-pencil fa-fw"></i>&nbsp; Edit</h4>
+              </div>
+              <div class="modal-body">
+                <form action="<% edit_url %>/<% id %>" method=post class="form-horizontal">
+                  <div class="form-group">
+                    <textarea class="form-control" rows="5" id="textArea" name="inputText<% id %>" placeholder="Text">
+                      <% decode_fun('utf-8', user_noise.$id.text) %>
+                    </textarea>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-lg-4 col-lg-offset-8">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>&nbsp;&nbsp;&nbsp;
+                      <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <% END %>
+<% ELSIF user_noise.size == 0 && !session.logged_in %>
+<div class="container">
+  <div class="jumbotron">
+    <h2>So&nbsp; quiet</h2>
+    <!-- Trigger the modal with a button -->
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#mkanoise_btn">Make a noise</button>
+    <!-- Modal -->
+    <div class="modal fade" id="mkanoise_btn" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Make a noise</h4>
+          </div>
+          <div class="modal-body">
+            <h2>Sign in first.</h2>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>&nbsp;&nbsp;&nbsp;
+            <a href="<% request.uri_base %>/signin"><button type="button" class="btn btn-primary">Sign in</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% END %>
