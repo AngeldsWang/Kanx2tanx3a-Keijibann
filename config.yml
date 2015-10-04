@@ -27,4 +27,17 @@ engines:
       start_tag: '<%'
       end_tag:   '%>'
 
+session: Simple
+
+plugins:
+  Captcha:
+    new:
+      width: 100
+      height: 40
+      lines: 1
+      gd_font: 'giant'
+    create: [ 'normal', 'default' ]
+    out:
+      force: 'png'
+    particle: [ 100 ]
 

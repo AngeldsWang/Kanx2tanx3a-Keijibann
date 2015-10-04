@@ -1,5 +1,6 @@
 package Kanx2tanx3a::Keijibann;
 use Dancer2;
+use Dancer2::Plugin::Captcha;
 use DBI;
 use File::Spec;
 use File::Slurper qw/ read_text /;
@@ -7,11 +8,12 @@ use Template;
 use Encode qw/ decode /;
 
 set 'database' => File::Spec->catfile(File::Spec->updir(), 'harmonies.db');
-set 'session'  => 'Simple';
+#set 'session'  => 'Simple';
 
 our $VERSION = '0.1';
 
 my $flash;
+my $is_valid_data;
 
 sub set_flash {
 	my $message = shift;
@@ -75,15 +77,43 @@ any ['get', 'post'] => '/mkanoise' => sub {
 		redirect '/signin';
 	}
 	if (request->method() eq "POST") {
+		if (params->{'inputTitle'} eq "") {
+			set_flash('Please input noise title!');
+		}
+		elsif (params->{'inputText'} eq "") {
+			set_flash('Please input noise content!');
+		}
+		elsif (params->{'captchaText'} eq "") {
+			set_flash('Please enter the captcha!');
+		}
+		elsif (not is_valid_captcha(params->{'captchaText'})) {
+			set_flash('Incorrect captcha!');
+			remove_captcha;
+		} else {
+			my $db = connect_db();
+			my $sql = 'insert into noises (title, text, username, timestamp) values (?, ?, ?, ?)';
+			my $sth = $db->prepare($sql) or die $db->errstr;
+			my $timestamp = localtime;
+			$sth->execute(params->{'inputTitle'}, params->{'inputText'}, session('cur_user'), $timestamp) or die $sth->errstr;
+			set_flash('New noise posted!');
+			redirect '/';
+		}
+		my $cur_user = session('cur_user');
 		my $db = connect_db();
-		my $sql = 'insert into noises (title, text, username, timestamp) values (?, ?, ?, ?)';
+		my $sql = 'select * from noises where username = ? order by timestamp desc';
 		my $sth = $db->prepare($sql) or die $db->errstr;
-		my $timestamp = localtime;
-		$sth->execute(params->{'inputTitle'}, params->{'inputText'}, session('cur_user'), $timestamp) or die $sth->errstr;
-
-		set_flash('New noise posted!');
+		$sth->execute(($cur_user)) or die $sth->errstr;
+		template 'show_noises.tt', {
+			'curr_title' => params->{'inputTitle'},
+			'curr_text' => params->{'inputText'},
+			'msg' => get_flash(),
+			'mkanoise_url' => uri_for('/mkanoise'),
+			'noises' => $sth->fetchall_hashref('nid'),
+	    'decode_fun' => \&decode,		# decode subroutine handler for encoded (Unicode) data in sqlite
+	    'get_color_fun' => \&get_noise_color,
+	    'get_offset_fun' => \&get_offset,
+		};
 	}
-	redirect '/';
 };
 
 get '/logout' => sub {
@@ -192,6 +222,18 @@ get '/delete/:id' => sub {
 
 	redirect '/list';	# return the cur_user's noises list
 };
+
+# captcha
+get '/get_captcha' => sub {
+    return generate_captcha();
+};
+ 
+# post '/validate_captcha' => sub {
+#     return "Invalid captcha code."
+#         unless (is_valid_captcha(request->params->{captcha}));
+ 
+#     remove_captcha;
+# };
 
 init_noises();
 

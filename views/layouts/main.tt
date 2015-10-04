@@ -78,6 +78,14 @@
 		#noise_id {
 			display: none;
 		}
+		#imgCaptcha {
+			margin-top: -2px;
+		}
+		#inputCaptcha {
+			width: 120px;
+			height: 38px;
+			margin-top: -2px;
+		}
 		
 	</style>
 
