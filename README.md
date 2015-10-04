@@ -5,7 +5,7 @@ Kanx2tanx3a-Keijibann
 A Simple bbs 'Harmonies', a web app based on [Dancer2](http://perldancer.org/), which is a light web framework for Perl. Supporting user session and full CRUD operation.
 
 ###Dependencies
-* Module: File::Slurper , DBD::SQLite
+* Module: File::Slurper, DBD::SQLite, Dancer2::Plugin::Captcha
 * Tamplate engine: template_toolkit.
 * Theme: bootstrap 3 + fontawesome
 
